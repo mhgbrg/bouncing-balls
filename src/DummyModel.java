@@ -44,12 +44,12 @@ public class DummyModel implements IBouncingBallsModel {
 			double m[][] = {v1, v2};
 
 			// Change the basis of the velocities to the new basis
-			double vm1[] = multiplyMatrix(inverse(m), new Double[]{b1.vx, b1.v2});
-			double vm2[] = multiplyMatrix(inverse(m), new Double[]{b2.vx, b2.v2});
+			double vm1[] = multiplyMatrix(inverse2DMatrix(m), new double[]{b1.vx, b1.vy});
+			double vm2[] = multiplyMatrix(inverse2DMatrix(m), new double[]{b2.vx, b2.vy});
 
 			// Calculate new velocity in pi-direction and change basis back to the standard basis
-			double ve1[] = multiplyMatrix(m, new Double[]{-vm1[0], vm1[1]});
-			double ve2[] = multiplyMatrix(m, new Double[]{-vm2[0], vm2[1]});
+			double ve1[] = multiplyMatrix(m, new double[]{-vm1[0], vm1[1]});
+			double ve2[] = multiplyMatrix(m, new double[]{-vm2[0], vm2[1]});
 
 			// Set the new velocities
 			b1.vx = ve1[0];
@@ -66,6 +66,10 @@ public class DummyModel implements IBouncingBallsModel {
         double dist = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
         return dist < b1.r + b2.r;
     }
+
+	private double[] multiplyMatrix(double[][] m, double[] v) {
+		return v;
+	}
 
     //Invert a 2D matrix
     private double[][] inverse2DMatrix(double[][] m) {
