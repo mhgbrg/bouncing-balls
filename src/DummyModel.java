@@ -4,15 +4,15 @@ import java.util.List;
 
 public class DummyModel implements IBouncingBallsModel {
 
-	private final double areaWidth;
-	private final double areaHeight;
+    private final double areaWidth;
+    private final double areaHeight;
     private final double G = -5;
 
     private Ball b1, b2;
 
-	public DummyModel(double width, double height) {
-		this.areaWidth = width;
-		this.areaHeight = height;
+    public DummyModel(double width, double height) {
+        this.areaWidth = width;
+        this.areaHeight = height;
 
         //Add balls
         b1 = randomBall();
@@ -28,7 +28,7 @@ public class DummyModel implements IBouncingBallsModel {
             for (double d : v)
                 System.out.println(d);
         /* */
-	}
+    }
 
     //CALCULATIONS
 
@@ -38,22 +38,25 @@ public class DummyModel implements IBouncingBallsModel {
         b2.wallBounce();
 
         if (hasCollided(b1,b2)) {
-			// Calculate the basis of the collision
-			double v1[] = {b2.x - b1.x, b2.y - b1.y};
-			double v2[] = {-v1[1], v1[0]};
-			double m[][] = {v1, v2};
+            // Calculate the basis of the collision
+            double v1[] = {b2.x - b1.x, b2.y - b1.y};
+            double v2[] = {-v1[1], v1[0]};
+            double m[][] = {v1, v2};
 
-			// Change the basis of the velocities to the new basis
-			double vm1[] = multiplyMatrix(inverse2DMatrix(m), b1.velocityAsVector());
-			double vm2[] = multiplyMatrix(inverse2DMatrix(m), b2.velocityAsVector());
+            // Change the basis of the velocities to the new basis
+            double vm1[] = multiplyMatrix(inverse2DMatrix(m), b1.velocityAsVector());
+            double vm2[] = multiplyMatrix(inverse2DMatrix(m), b2.velocityAsVector());
 
-			// Calculate new velocity in pi-direction and change basis back to the standard basis
-			double ve1[] = multiplyMatrix(m, new double[]{-vm1[0], vm1[1]});
-			double ve2[] = multiplyMatrix(m, new double[]{-vm2[0], vm2[1]});
+            //Only change directions if the balls are getting closer.
+            if (vm1[0] > vm2[0]) {
+                // Calculate new velocity in pi-direction and change basis back to the standard basis
+                double ve1[] = multiplyMatrix(m, new double[]{-vm1[0], vm1[1]});
+                double ve2[] = multiplyMatrix(m, new double[]{-vm2[0], vm2[1]});
 
-			// Set the new velocities
-			b1.setVelocity(ve1);
-			b2.setVelocity(ve2);
+                // Set the new velocities
+                b1.setVelocity(ve1);
+                b2.setVelocity(ve2);
+            }
         }
     }
 
@@ -65,12 +68,12 @@ public class DummyModel implements IBouncingBallsModel {
         return dist < b1.r + b2.r;
     }
 
-	private double[] multiplyMatrix(double[][] m, double[] v) {
-		return new double[]{
-			m[0][0] * v[0] + m[1][0] * v[1],
-			m[0][1] * v[0] + m[1][1] * v[1]
-		};
-	}
+    private double[] multiplyMatrix(double[][] m, double[] v) {
+        return new double[]{
+            m[0][0] * v[0] + m[1][0] * v[1],
+            m[0][1] * v[0] + m[1][1] * v[1]
+        };
+    }
 
     //Invert a 2D matrix
     private double[][] inverse2DMatrix(double[][] m) {
@@ -88,10 +91,10 @@ public class DummyModel implements IBouncingBallsModel {
         double[][] inverse = {
             {
                 d/det,
-                -b/det
+                -c/det
             },
             {
-                -c/det,
+                -b/det,
                 a/det
             }
         };
@@ -124,23 +127,25 @@ public class DummyModel implements IBouncingBallsModel {
 
     //APPLET METHODS
 
-	@Override
-	public void tick(double deltaT) {
-            handleCollisions();
-            b1.tick(deltaT);
-            b2.tick(deltaT);
-	}
+    @Override
+    public void tick(double deltaT) {
+        handleCollisions();
+        b1.tick(deltaT);
+        b2.tick(deltaT);
+    }
 
-	@Override
-	public List<Ellipse2D> getBalls() {
-		List<Ellipse2D> myBalls = new LinkedList<Ellipse2D>();
+    @Override
+    public List<Ellipse2D> getBalls() {
+        List<Ellipse2D> myBalls = new LinkedList<Ellipse2D>();
         myBalls.add(b1.asEllipse());
         myBalls.add(b2.asEllipse());
-		return myBalls;
-	}
+        return myBalls;
+    }
+
+    //ADDITIONAL CLASSES
 
     public class Ball {
-		double density = 1;
+        double density = 1;
 
         double x, y, vx, vy, r;
 
@@ -168,23 +173,23 @@ public class DummyModel implements IBouncingBallsModel {
         }
 
         public Ellipse2D asEllipse() {
-		    return new Ellipse2D.Double(x - r, y - r, 2 * r, 2 * r);
+            return new Ellipse2D.Double(x - r, y - r, 2 * r, 2 * r);
         }
 
-		public double[] velocityAsVector() {
-			return new double[]{
-				this.vx, this.vy
-			};
-		}
+        public double[] velocityAsVector() {
+            return new double[]{
+                this.vx, this.vy
+            };
+        }
 
-		public double getMass() {
-			return density * 4 * Math.PI * Math.pow(r, 3) / 3;
-		}
+        public double getMass() {
+            return density * 4 * Math.PI * Math.pow(r, 3) / 3;
+        }
 
-		public void setVelocity(double[] v) {
-			this.vx = v[0];
-			this.vy = v[1];
-		}
+        public void setVelocity(double[] v) {
+            this.vx = v[0];
+            this.vy = v[1];
+        }
 
         public String toString() {
             return "r: " + r ;
