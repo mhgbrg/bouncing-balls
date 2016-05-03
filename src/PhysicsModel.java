@@ -2,7 +2,7 @@ import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DummyModel implements IBouncingBallsModel {
+public class PhysicsModel implements IBouncingBallsModel {
 
     private final double areaWidth;
     private final double areaHeight;
@@ -10,7 +10,7 @@ public class DummyModel implements IBouncingBallsModel {
 
     private List<Ball> balls;
 
-    public DummyModel(double width, double height) {
+    public PhysicsModel(double width, double height) {
         this.areaWidth = width;
         this.areaHeight = height;
 

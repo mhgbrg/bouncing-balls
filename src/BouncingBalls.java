@@ -25,7 +25,7 @@ public final class BouncingBalls extends Animator {
 		super.init();
 		double modelWidth = canvasWidth / PIXELS_PER_METER;
 		modelHeight = canvasHeight / PIXELS_PER_METER;
-		model = new DummyModel(modelWidth, modelHeight);
+		model = new PhysicsModel(modelWidth, modelHeight);
 	}
 
 	@Override
