@@ -142,6 +142,7 @@ public class DummyModel implements IBouncingBallsModel {
 	}
 
     public class Ball {
+		double density = 1;
 
         double x, y, vx, vy, r;
 
@@ -176,6 +177,10 @@ public class DummyModel implements IBouncingBallsModel {
 			return new double[]{
 				this.vx, this.vy
 			};
+		}
+
+		public double getMass() {
+			return density * 4 * Math.PI * Math.pow(r, 3) / 3;
 		}
 
         public String toString() {
