@@ -7,34 +7,43 @@ public class DummyModel implements IBouncingBallsModel {
 	private final double areaWidth;
 	private final double areaHeight;
 
-    private List<Ball> balls;
+    private Ball b1, b2;
 
 	public DummyModel(double width, double height) {
 		this.areaWidth = width;
 		this.areaHeight = height;
-        balls = new LinkedList<>();
 
         //Add balls
-        balls.add(randomBall());
-        balls.add(randomBall());
+        b1 = randomBall();
+        b2 = randomBall();
 	}
 
-	@Override
-	public void tick(double deltaT) {
-        for (Ball b : balls) {
-            b.tick(deltaT);
+    //CALCULATIONS
+
+    public void recalcVelocity() {
+        //Bounce off walls
+        b1.wallBounce();
+        b2.wallBounce();
+
+        if (hasCollided(b1,b2)) {
+            b1.vx = -b1.vx;
+            b2.vy = -b2.vy;
         }
-	}
+    }
 
-	@Override
-	public List<Ellipse2D> getBalls() {
-		List<Ellipse2D> myBalls = new LinkedList<Ellipse2D>();
-        for (Ball b : balls) {
-            myBalls.add(b.asEllipse());
-        }
-		return myBalls;
-	}
+    private boolean hasCollided(Ball b1, Ball b2) {
+        //Two balls have collided when their distance is less than the sum of their radiuses.
+        double dx = b1.x - b2.x;
+        double dy = b1.y - b2.y;
+        double dist = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+        return dist < b1.r + b2.r;
+    }
 
+    //UTILITY
+
+    /**
+     * Generate a random ball in the field
+     */
     private Ball randomBall() {
         final double MIN_SIZE = 0.2;
         final double MAX_SIZE = 2;
@@ -54,9 +63,26 @@ public class DummyModel implements IBouncingBallsModel {
         return Math.random()*(max - min) + min;
     }
 
+    //APPLET METHODS
+
+	@Override
+	public void tick(double deltaT) {
+            recalcVelocity();
+            b1.tick(deltaT);
+            b2.tick(deltaT);
+	}
+
+	@Override
+	public List<Ellipse2D> getBalls() {
+		List<Ellipse2D> myBalls = new LinkedList<Ellipse2D>();
+        myBalls.add(b1.asEllipse());
+        myBalls.add(b2.asEllipse());
+		return myBalls;
+	}
+
     public class Ball {
 
-        private double x, y, vx, vy, r;
+        double x, y, vx, vy, r;
 
         public Ball(double x, double y, double vx, double vy, double r) {
             this.x =  x;
@@ -67,14 +93,17 @@ public class DummyModel implements IBouncingBallsModel {
         }
 
         public void tick(double deltaT) {
+            x += vx * deltaT;
+            y += vy * deltaT;
+        }
+
+        public void wallBounce() {
             if (x < r || x > areaWidth - r) {
                 vx *= -1;
             }
             if (y < r || y > areaHeight - r) {
                 vy *= -1;
             }
-            x += vx * deltaT;
-            y += vy * deltaT;
         }
 
         public Ellipse2D asEllipse() {
