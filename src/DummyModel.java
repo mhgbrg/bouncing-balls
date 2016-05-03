@@ -8,23 +8,35 @@ public class DummyModel implements IBouncingBallsModel {
 	private final double areaWidth;
 	private final double areaHeight;
 
-    private Ball b1, b2;
+    private List<Ball> balls;
 
 	public DummyModel(double width, double height) {
 		this.areaWidth = width;
 		this.areaHeight = height;
-        b1 = new Ball(1,1,2.3,1,1);
+        balls = new LinkedList<>();
+
+        //All balls
+        Ball b1 = new Ball(1,1,2.3,1,1);
+        Ball b2 = new Ball(2,2,1.3,0.7,1);
+        
+        //Add balls
+        balls.add(b1);
+        balls.add(b2);
 	}
 
 	@Override
 	public void tick(double deltaT) {
-        b1.tick(deltaT);
+        for (Ball b : balls) {
+            b.tick(deltaT);
+        }
 	}
 
 	@Override
 	public List<Ellipse2D> getBalls() {
 		List<Ellipse2D> myBalls = new LinkedList<Ellipse2D>();
-		myBalls.add(b1.asEllipse());
+        for (Ball b : balls) {
+            myBalls.add(b.asEllipse());
+        }
 		return myBalls;
 	}
 
