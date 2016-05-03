@@ -1,7 +1,7 @@
 import java.awt.geom.Ellipse2D;
 import java.util.LinkedList;
 import java.util.List;
-// import org.apache.commons.math3.linear.*;
+import org.apache.commons.math3.linear.*;
 
 public class DummyModel implements IBouncingBallsModel {
 
@@ -11,7 +11,7 @@ public class DummyModel implements IBouncingBallsModel {
 	private double x, y, vx, vy, r;
 
 	public DummyModel(double width, double height) {
-        // RealMatrix re = null;
+        RealMatrix re = null;
 		this.areaWidth = width;
 		this.areaHeight = height;
 		x = 1;
