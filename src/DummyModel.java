@@ -159,10 +159,10 @@ public class DummyModel implements IBouncingBallsModel {
         }
 
         public void wallBounce() {
-            if (x < r || x > areaWidth - r) {
+            if ((x < r && vx < 0) || (x > areaWidth - r && vx > 0)) {
                 vx *= -1;
             }
-            if (y < r || y > areaHeight - r) {
+            if ((y < r && vy < 0) || (y > areaHeight - r && vy > 0)) {
                 vy *= -1;
             }
         }
