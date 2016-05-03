@@ -17,6 +17,8 @@ public class PhysicsModel implements IBouncingBallsModel {
 
         //Add balls
         balls = new ArrayList<>();
+        balls.add(new Ball(4, 3, -1.2, 2.2, 1.2));
+        balls.add(new Ball(4, 7, 5.2, 2.2, 1.5));
         while (balls.size() < NBR_OF_BALLS) {
             Ball newBall = randomBall();
             boolean add = true;
