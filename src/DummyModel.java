@@ -196,7 +196,7 @@ public class DummyModel implements IBouncingBallsModel {
         }
 
         public double getMass() {
-            return density * 4 * Math.PI * Math.pow(r, 3) / 3;
+            return density * Math.PI * Math.pow(r, 2);
         }
 
         public void setVelocity(double[] v) {
