@@ -68,7 +68,10 @@ public class DummyModel implements IBouncingBallsModel {
     }
 
 	private double[] multiplyMatrix(double[][] m, double[] v) {
-		return v;
+		return new double[]{
+			m[0][0] * v[0] + m[1][0] * v[1],
+			m[0][1] * v[0] + m[1][1] * v[1]
+		};
 	}
 
     //Invert a 2D matrix
