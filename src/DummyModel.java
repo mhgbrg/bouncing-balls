@@ -17,6 +17,11 @@ public class DummyModel implements IBouncingBallsModel {
         //Add balls
         b1 = randomBall();
         b2 = randomBall();
+
+        /* DEBUG */
+        System.out.println("B1 + \n" + b1);
+        System.out.println("B2 + \n" + b2);
+        /* */
 	}
 
     //CALCULATIONS
@@ -112,5 +117,8 @@ public class DummyModel implements IBouncingBallsModel {
 		    return new Ellipse2D.Double(x - r, y - r, 2 * r, 2 * r);
         }
 
+        public String toString() {
+            return "r: " + r ;
+        }
     }
 }
