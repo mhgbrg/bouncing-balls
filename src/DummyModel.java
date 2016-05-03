@@ -1,5 +1,5 @@
 import java.awt.geom.Ellipse2D;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DummyModel implements IBouncingBallsModel {
@@ -8,35 +8,22 @@ public class DummyModel implements IBouncingBallsModel {
     private final double areaHeight;
     private final double G = -5;
 
-    private Ball b1, b2;
+    private List<Ball> balls;
 
     public DummyModel(double width, double height) {
         this.areaWidth = width;
         this.areaHeight = height;
 
         //Add balls
-        b1 = randomBall();
-        b2 = randomBall();
-
-        /* DEBUG */
-        System.out.println("B1 + \n" + b1);
-        System.out.println("B2 + \n" + b2);
-
-        double[][] testMatrix = {{4,3}, {3,2}};
-        double[][] inverse = inverse2DMatrix(testMatrix);
-        for (double[] v : inverse)
-            for (double d : v)
-                System.out.println(d);
-        /* */
+        balls = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            balls.add(randomBall());
+        }
     }
 
     //CALCULATIONS
 
-    public void handleCollisions() {
-        //Bounce off walls
-        b1.wallBounce();
-        b2.wallBounce();
-
+    private void handleCollision(Ball b1, Ball b2) {
         if (hasCollided(b1,b2)) {
             // Calculate the basis of the collision
             double v1[] = {b2.x - b1.x, b2.y - b1.y};
@@ -136,16 +123,28 @@ public class DummyModel implements IBouncingBallsModel {
 
     @Override
     public void tick(double deltaT) {
-        handleCollisions();
-        b1.tick(deltaT);
-        b2.tick(deltaT);
+        //Bounce off walls
+        for (Ball b : balls) {
+            b.wallBounce();
+        }
+        //Check collision between all balls pairwise
+        for (int i = 0; i < balls.size(); i++) {
+            for (int j = 0; j < i; j++) {
+                handleCollision(balls.get(i), balls.get(j));
+            }
+        }
+        //Move all balls forward
+        for (Ball b : balls) {
+            b.tick(deltaT);
+        }
     }
 
     @Override
     public List<Ellipse2D> getBalls() {
-        List<Ellipse2D> myBalls = new LinkedList<Ellipse2D>();
-        myBalls.add(b1.asEllipse());
-        myBalls.add(b2.asEllipse());
+        List<Ellipse2D> myBalls = new ArrayList<Ellipse2D>();
+        for (Ball b : balls) {
+            myBalls.add(b.asEllipse());
+        }
         return myBalls;
     }
 
