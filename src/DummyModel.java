@@ -2,7 +2,6 @@ import java.awt.geom.Ellipse2D;
 import java.util.LinkedList;
 import java.util.List;
 
-
 public class DummyModel implements IBouncingBallsModel {
 
 	private final double areaWidth;
@@ -15,13 +14,9 @@ public class DummyModel implements IBouncingBallsModel {
 		this.areaHeight = height;
         balls = new LinkedList<>();
 
-        //All balls
-        Ball b1 = new Ball(1,1,2.3,1,1);
-        Ball b2 = new Ball(2,2,1.3,0.7,1);
-        
         //Add balls
-        balls.add(b1);
-        balls.add(b2);
+        balls.add(randomBall());
+        balls.add(randomBall());
 	}
 
 	@Override
@@ -39,6 +34,25 @@ public class DummyModel implements IBouncingBallsModel {
         }
 		return myBalls;
 	}
+
+    private Ball randomBall() {
+        final double MIN_SIZE = 0.2;
+        final double MAX_SIZE = 2;
+        final double MIN_SPEED = 0.5;
+        final double MAX_SPEED = 5;
+        
+        double r = random(MIN_SIZE, MAX_SIZE); 
+        double vx = random(MIN_SPEED, MAX_SPEED); 
+        double vy = random(MIN_SPEED, MAX_SPEED); 
+        double x = random(0+r, areaWidth-r); 
+        double y = random(0+r, areaHeight-r); 
+
+        return new Ball(x,y,vx,vy,r);
+    }
+
+    private double random(double min, double max) {
+        return Math.random()*(max - min) + min;
+    }
 
     public class Ball {
 
@@ -66,5 +80,6 @@ public class DummyModel implements IBouncingBallsModel {
         public Ellipse2D asEllipse() {
 		    return new Ellipse2D.Double(x - r, y - r, 2 * r, 2 * r);
         }
+
     }
 }
