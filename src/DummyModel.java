@@ -38,8 +38,24 @@ public class DummyModel implements IBouncingBallsModel {
         b2.wallBounce();
 
         if (hasCollided(b1,b2)) {
-            b1.vx = -b1.vx;
-            b2.vy = -b2.vy;
+			// Calculate the basis of the collision
+			double v1[] = {b2.x - b1.x, b2.y - b1.y};
+			double v2[] = {b1.y - b2.y, b2.x - b1.x};
+			double m[][] = {v1, v2};
+
+			// Change the basis of the velocities to the new basis
+			double vm1[] = multiplyMatrix(inverse(m), new Double[]{b1.vx, b1.v2});
+			double vm2[] = multiplyMatrix(inverse(m), new Double[]{b2.vx, b2.v2});
+
+			// Calculate new velocity in pi-direction and change basis back to the standard basis
+			double ve1[] = multiplyMatrix(m, new Double[]{-vm1[0], vm1[1]});
+			double ve2[] = multiplyMatrix(m, new Double[]{-vm2[0], vm2[1]});
+
+			// Set the new velocities
+			b1.vx = ve1[0];
+			b1.vy = ve1[1];
+			b2.vx = ve2[0];
+			b2.vy = ve2[1];
         }
     }
 
@@ -87,12 +103,12 @@ public class DummyModel implements IBouncingBallsModel {
         final double MAX_SIZE = 2;
         final double MIN_SPEED = 0.5;
         final double MAX_SPEED = 5;
-        
-        double r = random(MIN_SIZE, MAX_SIZE); 
-        double vx = random(MIN_SPEED, MAX_SPEED); 
-        double vy = random(MIN_SPEED, MAX_SPEED); 
-        double x = random(0+r, areaWidth-r); 
-        double y = random(0+r, areaHeight-r); 
+
+        double r = random(MIN_SIZE, MAX_SIZE);
+        double vx = random(MIN_SPEED, MAX_SPEED);
+        double vy = random(MIN_SPEED, MAX_SPEED);
+        double x = random(0+r, areaWidth-r);
+        double y = random(0+r, areaHeight-r);
 
         return new Ball(x,y,vx,vy,r);
     }
