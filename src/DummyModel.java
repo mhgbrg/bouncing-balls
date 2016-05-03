@@ -52,10 +52,8 @@ public class DummyModel implements IBouncingBallsModel {
 			double ve2[] = multiplyMatrix(m, new double[]{-vm2[0], vm2[1]});
 
 			// Set the new velocities
-			b1.vx = ve1[0];
-			b1.vy = ve1[1];
-			b2.vx = ve2[0];
-			b2.vy = ve2[1];
+			b1.setVelocity(ve1);
+			b2.setVelocity(ve2);
         }
     }
 
@@ -181,6 +179,11 @@ public class DummyModel implements IBouncingBallsModel {
 
 		public double getMass() {
 			return density * 4 * Math.PI * Math.pow(r, 3) / 3;
+		}
+
+		public void setVelocity(double[] v) {
+			this.vx = v[0];
+			this.vy = v[1];
 		}
 
         public String toString() {
