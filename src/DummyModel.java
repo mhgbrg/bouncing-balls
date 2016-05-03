@@ -62,7 +62,7 @@ public class DummyModel implements IBouncingBallsModel {
         return dist < b1.r + b2.r;
     }
 
-    private double[] multiplyMatrix(double[][] m, double[] v) {
+    private static double[] multiplyMatrix(double[][] m, double[] v) {
         return new double[]{
             m[0][0] * v[0] + m[1][0] * v[1],
             m[0][1] * v[0] + m[1][1] * v[1]
@@ -70,7 +70,7 @@ public class DummyModel implements IBouncingBallsModel {
     }
 
     //Invert a 2D matrix
-    private double[][] inverse2DMatrix(double[][] m) {
+    private static double[][] inverse2DMatrix(double[][] m) {
         /*  _     _
          * | a   b |
          * | c   d |
@@ -115,7 +115,7 @@ public class DummyModel implements IBouncingBallsModel {
         return new Ball(x,y,vx,vy,r);
     }
 
-    private double random(double min, double max) {
+    private static double random(double min, double max) {
         return Math.random()*(max - min) + min;
     }
 
