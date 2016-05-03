@@ -4,15 +4,15 @@ import java.util.List;
 
 public class DummyModel implements IBouncingBallsModel {
 
-	private final double areaWidth;
-	private final double areaHeight;
+    private final double areaWidth;
+    private final double areaHeight;
     private final double G = -5;
 
     private Ball b1, b2;
 
-	public DummyModel(double width, double height) {
-		this.areaWidth = width;
-		this.areaHeight = height;
+    public DummyModel(double width, double height) {
+        this.areaWidth = width;
+        this.areaHeight = height;
 
         //Add balls
         b1 = randomBall();
@@ -28,7 +28,7 @@ public class DummyModel implements IBouncingBallsModel {
             for (double d : v)
                 System.out.println(d);
         /* */
-	}
+    }
 
     //CALCULATIONS
 
@@ -38,14 +38,14 @@ public class DummyModel implements IBouncingBallsModel {
         b2.wallBounce();
 
         if (hasCollided(b1,b2)) {
-			// Calculate the basis of the collision
-			double v1[] = {b2.x - b1.x, b2.y - b1.y};
-			double v2[] = {b1.y - b2.y, b2.x - b1.x};
-			double m[][] = {v1, v2};
+            // Calculate the basis of the collision
+            double v1[] = {b2.x - b1.x, b2.y - b1.y};
+            double v2[] = {b1.y - b2.y, b2.x - b1.x};
+            double m[][] = {v1, v2};
 
-			// Change the basis of the velocities to the new basis
-			double vm1[] = multiplyMatrix(inverse2DMatrix(m), b1.velocityAsVector());
-			double vm2[] = multiplyMatrix(inverse2DMatrix(m), b2.velocityAsVector());
+            // Change the basis of the velocities to the new basis
+            double vm1[] = multiplyMatrix(inverse2DMatrix(m), b1.velocityAsVector());
+            double vm2[] = multiplyMatrix(inverse2DMatrix(m), b2.velocityAsVector());
 
             //Only change directions if the balls are getting closer.
             if (vm1[0] > vm2[0]) {
