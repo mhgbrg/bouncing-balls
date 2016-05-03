@@ -21,6 +21,12 @@ public class DummyModel implements IBouncingBallsModel {
         /* DEBUG */
         System.out.println("B1 + \n" + b1);
         System.out.println("B2 + \n" + b2);
+
+        double[][] testMatrix = {{4,3}, {3,2}};
+        double[][] inverse = inverse2DMatrix(testMatrix);
+        for (double[] v : inverse)
+            for (double d : v)
+                System.out.println(d);
         /* */
 	}
 
@@ -43,6 +49,32 @@ public class DummyModel implements IBouncingBallsModel {
         double dy = b1.y - b2.y;
         double dist = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
         return dist < b1.r + b2.r;
+    }
+
+    //Invert a 2D matrix
+    private double[][] inverse2DMatrix(double[][] m) {
+        /*  _     _
+         * | a   b |
+         * | c   d |
+         * |_     _|
+         */
+        double a = m[0][0];
+        double b = m[1][0];
+        double c = m[0][1];
+        double d = m[1][1];
+        //determinant
+        double det = a*d - b*c;
+        double[][] inverse = {
+            {
+                d/det,
+                -b/det
+            },
+            {
+                -c/det,
+                a/det
+            }
+        };
+        return inverse;
     }
 
     //UTILITY
