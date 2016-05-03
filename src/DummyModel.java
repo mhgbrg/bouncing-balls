@@ -6,6 +6,7 @@ public class DummyModel implements IBouncingBallsModel {
 
 	private final double areaWidth;
 	private final double areaHeight;
+    private final double G = -5;
 
     private Ball b1, b2;
 
@@ -93,6 +94,7 @@ public class DummyModel implements IBouncingBallsModel {
         }
 
         public void tick(double deltaT) {
+            vy += G * deltaT;
             x += vx * deltaT;
             y += vy * deltaT;
         }
