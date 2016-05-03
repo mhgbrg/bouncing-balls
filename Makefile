@@ -1,2 +1,2 @@
 default:
-	javac -d out src/*.java
+	javac -d out -classpath out/commons-math3-3.6.1.jar src/*.java
