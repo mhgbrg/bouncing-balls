@@ -4,6 +4,7 @@ import java.util.List;
 
 public class PhysicsModel implements IBouncingBallsModel {
 
+    private final int NBR_OF_BALLS = 10000;
     private final double areaWidth;
     private final double areaHeight;
     private final double G = -5;
@@ -16,8 +17,18 @@ public class PhysicsModel implements IBouncingBallsModel {
 
         //Add balls
         balls = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            balls.add(randomBall());
+        for (int i = 0; i < NBR_OF_BALLS; i++) {
+            Ball newBall = randomBall();
+            boolean add = true;
+            for (Ball b : balls) {
+                if (hasCollided(b, newBall)) {
+                    add = false;
+                    break;
+                }
+            }
+            if (add) {
+                balls.add(newBall);
+            }
         }
     }
 
@@ -103,12 +114,11 @@ public class PhysicsModel implements IBouncingBallsModel {
     private Ball randomBall() {
         final double MIN_SIZE = 0.2;
         final double MAX_SIZE = 2;
-        final double MIN_SPEED = 0.5;
         final double MAX_SPEED = 5;
 
         double r = random(MIN_SIZE, MAX_SIZE);
-        double vx = random(MIN_SPEED, MAX_SPEED);
-        double vy = random(MIN_SPEED, MAX_SPEED);
+        double vx = random(-MAX_SPEED, MAX_SPEED);
+        double vy = random(-MAX_SPEED, MAX_SPEED);
         double x = random(0+r, areaWidth-r);
         double y = random(0+r, areaHeight-r);
 
