@@ -164,11 +164,17 @@ public class DummyModel implements IBouncingBallsModel {
         }
 
         public void wallBounce() {
+            final double EPS = 1E-4;
             if ((x < r && vx < 0) || (x > areaWidth - r && vx > 0)) {
                 vx *= -1;
             }
             if ((y < r && vy < 0) || (y > areaHeight - r && vy > 0)) {
                 vy *= -1;
+            }
+
+            //Counteract gravity and make sure the ball isn't stuck against the bottom wall
+            if (y < r) {
+                y = r+EPS;
             }
         }
 
