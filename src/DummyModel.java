@@ -32,7 +32,7 @@ public class DummyModel implements IBouncingBallsModel {
 
     //CALCULATIONS
 
-    public void recalcVelocity() {
+    public void handleCollisions() {
         //Bounce off walls
         b1.wallBounce();
         b2.wallBounce();
@@ -128,7 +128,7 @@ public class DummyModel implements IBouncingBallsModel {
 
 	@Override
 	public void tick(double deltaT) {
-            recalcVelocity();
+            handleCollisions();
             b1.tick(deltaT);
             b2.tick(deltaT);
 	}
