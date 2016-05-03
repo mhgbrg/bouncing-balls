@@ -40,7 +40,7 @@ public class DummyModel implements IBouncingBallsModel {
         if (hasCollided(b1,b2)) {
 			// Calculate the basis of the collision
 			double v1[] = {b2.x - b1.x, b2.y - b1.y};
-			double v2[] = {b1.y - b2.y, b2.x - b1.x};
+			double v2[] = {-v1[1], v1[0]};
 			double m[][] = {v1, v2};
 
 			// Change the basis of the velocities to the new basis
