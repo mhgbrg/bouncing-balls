@@ -47,11 +47,18 @@ public class DummyModel implements IBouncingBallsModel {
             double vm1[] = multiplyMatrix(inverse2DMatrix(m), b1.velocityAsVector());
             double vm2[] = multiplyMatrix(inverse2DMatrix(m), b2.velocityAsVector());
 
-            //Only change directions if the balls are getting closer.
+            // Only change directions if the balls are getting closer
             if (vm1[0] > vm2[0]) {
-                // Calculate new velocity in pi-direction and change basis back to the standard basis
-                double ve1[] = multiplyMatrix(m, new double[]{-vm1[0], vm1[1]});
-                double ve2[] = multiplyMatrix(m, new double[]{-vm2[0], vm2[1]});
+                // Calculate new velocity in the direction of the collision
+                // It is assumed that no energy is lost in the collision
+                double i = b1.getMass() * vm1[0] + b2.getMass() * vm2[0];
+                double r = -(vm2[0] - vm1[0]);
+                double newV1 = (i - b2.getMass() * r) / (b1.getMass() + b2.getMass());
+                double newV2 = r + (i - b2.getMass() * r) / (b1.getMass() + b2.getMass());
+
+                // Change basis back to the standard basis
+                double ve1[] = multiplyMatrix(m, new double[]{newV1, vm1[1]});
+                double ve2[] = multiplyMatrix(m, new double[]{newV2, vm2[1]});
 
                 // Set the new velocities
                 b1.setVelocity(ve1);
