@@ -4,10 +4,11 @@ import java.util.List;
 
 public class PhysicsModel implements IBouncingBallsModel {
 
-    private final int NBR_OF_BALLS = 2;
+    private final int NBR_OF_BALLS = 10000;
     private final double areaWidth;
     private final double areaHeight;
     private final double G = -5;
+    private final double ENERGY_LOSS = 0.0;
 
     private List<Ball> balls;
 
@@ -17,9 +18,12 @@ public class PhysicsModel implements IBouncingBallsModel {
 
         //Add balls
         balls = new ArrayList<>();
-        balls.add(new Ball(4, 3, -1.2, 2.2, 1.2));
-        balls.add(new Ball(4, 7, 5.2, 2.2, 1.5));
-        while (balls.size() < NBR_OF_BALLS) {
+        // For demo: Two specific balls
+        balls.add(new Ball(4, 3, -1.2, 2.2, 1.8));
+        balls.add(new Ball(4, 7, 5.2, 2.2, 2));
+        // balls.get(0).setDensity(10);
+        // balls.get(1).setDensity(2);
+            while (balls.size() < NBR_OF_BALLS) {
             Ball newBall = randomBall();
             boolean add = true;
             for (Ball b : balls) {
@@ -55,6 +59,8 @@ public class PhysicsModel implements IBouncingBallsModel {
                 double r = -(vm2[0] - vm1[0]);
                 double newV1 = (i - b2.getMass() * r) / (b1.getMass() + b2.getMass());
                 double newV2 = r + (i - b2.getMass() * r) / (b1.getMass() + b2.getMass());
+                newV1 *=(1-ENERGY_LOSS);
+                newV1 *=(1-ENERGY_LOSS);
 
                 // Change basis back to the standard basis
                 double ve1[] = multiplyMatrix(m, new double[]{newV1, vm1[1]});
@@ -114,9 +120,9 @@ public class PhysicsModel implements IBouncingBallsModel {
      * Generate a random ball in the field
      */
     private Ball randomBall() {
-        final double MIN_SIZE = 1;
-        final double MAX_SIZE = 3;
-        final double MAX_SPEED = 25;
+        final double MIN_SIZE = 0.01;
+        final double MAX_SIZE = 0.01;
+        final double MAX_SPEED = 2;
 
         double r = random(MIN_SIZE, MAX_SIZE);
         double vx = random(-MAX_SPEED, MAX_SPEED);
@@ -175,6 +181,10 @@ public class PhysicsModel implements IBouncingBallsModel {
             this.r =  r;
         }
 
+        public void setDensity(double d) {
+            this.density = d;
+        }
+
         public void tick(double deltaT) {
             vy += G * deltaT;
             x += vx * deltaT;
@@ -186,7 +196,7 @@ public class PhysicsModel implements IBouncingBallsModel {
             if ((x < r && vx < 0) || (x > areaWidth - r && vx > 0)) {
                 vx *= -1;
             }
-            if ((y < r && vy < 0) /* Unroof it! */ || (y > areaHeight - r && vy > 0) /* */) {
+            if ((y < r && vy < 0) /* Unroof it! */  || (y > areaHeight - r && vy > 0) /* */) {
                 vy *= -1;
             }
 
