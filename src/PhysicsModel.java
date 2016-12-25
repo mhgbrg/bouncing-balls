@@ -5,10 +5,10 @@ import java.util.List;
 public class PhysicsModel implements IBouncingBallsModel {
 
     private final int NBR_OF_BALLS = 30;
-    private final double G = -9.82;
-    private final double ENERGY_LOSS = 0.01;
-    private final double MIN_SIZE = 0.53;
-    private final double MAX_SIZE = 0.81;
+    private final double G = -2.82;
+    private final double ENERGY_LOSS = 0.00;
+    private final double MIN_SIZE = 0.33;
+    private final double MAX_SIZE = 1.21;
     private final double MAX_SPEED = 2;
     private final boolean ROOF = false;
 
@@ -169,9 +169,8 @@ public class PhysicsModel implements IBouncingBallsModel {
     //ADDITIONAL CLASSES
 
     public class Ball {
-        double density = 1;
 
-        double x, y, vx, vy, r;
+        double x, y, vx, vy, r, density;
 
         public Ball(double x, double y, double vx, double vy, double r) {
             this.x =  x;
@@ -179,6 +178,7 @@ public class PhysicsModel implements IBouncingBallsModel {
             this.vx =  vx;
             this.vy =  vy;
             this.r =  r;
+            this.density = Math.random();
         }
 
         public void setDensity(double d) {

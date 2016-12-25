@@ -37,10 +37,11 @@ public final class BouncingBalls extends Animator {
 		model.tick(deltaT);
 		List<Ellipse2D> balls = model.getBalls();
 		// Transform balls to fit canvas
-		g.setColor(Color.RED);
 		g.scale(PIXELS_PER_METER, -PIXELS_PER_METER);
 		g.translate(0, -modelHeight);
 		for (Ellipse2D b : balls) {
+            PhysicsModel.Ball newB = (PhysicsModel.Ball)b;
+            g.setColor(new Color(1.0f, (float)newB.getDensity(), (float)newB.getDensity()));
 			g.fill(b);
 		}
 	}
